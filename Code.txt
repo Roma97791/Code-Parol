@@ -1,0 +1,56 @@
+# Code-Parol
+Я сделал код который использует ini файлы. Это код для изменения пароля при его верном вводе, я это не доделал но можно доделать и сделать секрет типо когда вводишь пароль верно то ввыводится секрет который можно изменить. Вот и вся работа я впервые работал с ini файлами такчто может где то что то можно сделать лутше.
+
+
+import configparser
+
+
+def save_pass(password, secret=1):
+    """
+    Create a config file
+    """
+    config = configparser.ConfigParser()
+    config.add_section("General")
+    config.set("General", "pass", password)
+    config.set("General", "secret", str(secret))
+
+    with open("save.ini", "w") as config_file:
+        config.write(config_file)
+
+    with open("save.ini", "r") as config_file:
+        config.read(config_file)
+
+
+def read_secret():
+    config = configparser.ConfigParser()
+    config.read("save.ini")
+    parol = config.get("General", "secret")
+    return parol
+
+
+def read_pass():
+    config = configparser.ConfigParser()
+    config.read("save.ini")
+    parol = config.get("General", "pass")
+    return parol
+
+
+parol_from_user = input('ВВЕДИ ПАРОЛЬ БЫСТРО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n')
+parol_from_file = read_pass()
+
+if parol_from_user == parol_from_file:
+    secret = read_secret()
+    print("Вот секрет " + secret)
+    print("Тест на память пройден молодец!")
+    save_pass(input("ВВЕДИ НОВЫЙ ПАРОЛЬ БЫСТРО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"))
+
+elif parol_from_user != parol_from_file:
+    parol_from_user = input("ДУБЛЬ 2\n")
+    if parol_from_user == parol_from_file:
+        secret = read_secret()
+        print("Вот секрет " + secret)
+        print("Тест на память пройден молодец!")
+        save_pass(input("ВВЕДИ НОВЫЙ ПАРОЛЬ БЫСТРО!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"))
+
+elif parol_from_user != parol_from_file:
+    print("ЗАЩИТА ВЫДЕРЖАЛА И ТЫ ПРОИГРАЛ ХАХАХАХАХАХАХАХАХА!!!!!!")
